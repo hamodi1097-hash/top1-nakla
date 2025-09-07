@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شركة نخلة - نظام الحسابات المالية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+        
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .notification {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .palm-icon {
+            background: linear-gradient(45deg, #10b981, #059669);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .form-input {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .form-input:focus {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #10b981, #059669);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #8b5cf6, #7c3aed);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(45deg, #7c3aed, #6d28d9);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(45deg, #ef4444, #dc2626);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(45deg, #dc2626, #b91c1c);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.4);
+        }
+        
+        .stats-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            pointer-events: none;
+        }
+        
+        .table-row:hover {
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.05), rgba(139, 92, 246, 0.05));
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            margin: 15% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Enhanced notification styles */
+        .notification-achievement {
+            animation: bounceIn 0.8s ease-out, glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3) translateX(100%); opacity: 0; }
+            50% { transform: scale(1.05) translateX(-10%); }
+            70% { transform: scale(0.9) translateX(5%); }
+            100% { transform: scale(1) translateX(0); opacity: 1; }
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(139, 92, 246, 0.5); }
+            to { box-shadow: 0 0 30px rgba(139, 92, 246, 0.8), 0 0 40px rgba(139, 92, 246, 0.3); }
+        }
+        
+        .notification-celebration {
+            animation: celebration 1s ease-out;
+        }
+        
+        @keyframes celebration {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-10px) rotate(-5deg); }
+            75% { transform: translateX(10px) rotate(5deg); }
+        }
+
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            
+            .print-area, .print-area * {
+                visibility: visible;
+            }
+            
+            .print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                color: black !important;
+                font-size: 12px;
+                line-height: 1.4;
+            }
+            
+            .print-header {
+                text-align: center;
+                border-bottom: 2px solid #000;
+                padding-bottom: 20px;
+                margin-bottom: 30px;
+            }
+            
+            .print-section {
+                margin-bottom: 25px;
+                page-break-inside: avoid;
+            }
+            
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            
+            .print-table th,
+            .print-table td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: right;
+            }
+            
+            .print-table th {
+                background-color: #f0f0f0 !important;
+                font-weight: bold;
+            }
+            
+            .print-summary {
+                border: 2px solid #000;
+                padding: 15px;
+                margin-top: 20px;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-teal-600 to-cyan-700 shadow-2xl border-b border-cyan-500/30">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex items-center justify-center space-x-4 space-x-reverse">
+                <div class="floating-animation">
+                    <svg class="w-12 h-12 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z"/>
+                        <path d="M12 16C12 16 8 18 8 22H16C16 18 12 16 12 16Z"/>
+                    </svg>
+                </div>
+                <div class="text-center">
+                    <h1 class="text-4xl font-bold text-white mb-2">
+                        <span id="headerLogoContainer" class="inline-block">
+                            <span class="company-logo palm-icon">🌴</span>
+                            <img class="company-logo-image w-12 h-12 object-contain hidden inline-block align-middle rounded-lg border-2 border-white/30">
+                        </span> شركة نخلة
+                    </h1>
+                    <p class="text-white/80 text-lg">نظام الحسابات المالية المتطور</p>
+                    <div class="w-20 h-1 bg-gradient-to-r from-green-400 to-blue-500 mx-auto mt-2 rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Logo Modal -->
+    <div id="logoModal" class="modal">
+        <div class="modal-content">
+            <div class="bg-gradient-to-r from-purple-500 to-violet-600 text-white p-6 rounded-t-2xl">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold flex items-center">
+                        <span class="ml-3 text-3xl">🏢</span>
+                        إضافة شعار الشركة
+                    </h2>
+                    <button onclick="closeLogoModal()" class="text-white hover:text-gray-200 text-2xl">✕</button>
+                </div>
+            </div>
+            <div class="p-8">
+                <div class="text-center mb-6">
+                    <div class="text-6xl mb-4">🎨</div>
+                    <p class="text-xl font-bold text-gray-800 mb-2">تخصيص شعار الشركة</p>
+                    <p class="text-gray-600">اختر شعار مناسب لشركتك من التصاميم المتاحة</p>
+                </div>
+                
+                <!-- Logo Options -->
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                    <div class="logo-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 transition-all duration-300" onclick="selectLogo('palm')">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🌴</div>
+                            <p class="text-sm font-medium">نخلة كلاسيكية</p>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 transition-all duration-300" onclick="selectLogo('delivery')">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🚚</div>
+                            <p class="text-sm font-medium">شاحنة التوصيل</p>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 transition-all duration-300" onclick="selectLogo('star')">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">⭐</div>
+                            <p class="text-sm font-medium">نجمة ذهبية</p>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 transition-all duration-300" onclick="selectLogo('crown')">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">👑</div>
+                            <p class="text-sm font-medium">تاج ملكي</p>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 transition-all duration-300" onclick="selectLogo('diamond')">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">💎</div>
+                            <p class="text-sm font-medium">ماسة فاخرة</p>
+                        </div>
+                    </div>
+                    
+                    <div class="logo-option border-2 border-gray-200 rounded-lg p-4 cursor-pointer hover:border-purple-500 transition-all duration-300" onclick="selectLogo('rocket')">
+                        <div class="text-center">
+                            <div class="text-4xl mb-2">🚀</div>
+                            <p class="text-sm font-medium">صاروخ سريع</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom Logo Input -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-bold mb-3">أو أدخل شعار مخصص:</label>
+                    <input type="text" id="customLogo" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 text-center text-2xl" placeholder="🏢 أدخل الرمز التعبيري" maxlength="2">
+                    <p class="text-sm text-gray-500 text-center mt-2">يمكنك نسخ أي رمز تعبيري من الإنترنت</p>
+                </div>
+                
+                <!-- Image Upload Section -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-bold mb-3">أو ارفع صورة شعار:</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-500 transition-all duration-300">
+                        <input type="file" id="logoImageInput" accept="image/*" class="hidden">
+                        <div id="uploadArea" class="cursor-pointer" onclick="document.getElementById('logoImageInput').click()">
+                            <div class="text-4xl mb-3">📁</div>
+                            <p class="text-gray-600 font-medium mb-2">اضغط لاختيار صورة الشعار</p>
+                            <p class="text-sm text-gray-500">PNG, JPG, GIF حتى 5MB</p>
+                        </div>
+                        <div id="imagePreviewArea" class="hidden">
+                            <img id="uploadedImagePreview" class="w-20 h-20 object-contain mx-auto mb-3 rounded-lg border-2 border-gray-200">
+                            <p class="text-sm text-gray-600 mb-2">صورة الشعار المرفوعة</p>
+                            <button type="button" onclick="removeUploadedImage()" class="text-red-500 hover:text-red-700 text-sm font-medium">
+                                🗑️ إزالة الصورة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Preview -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                    <p class="text-gray-700 font-medium mb-2 text-center">معاينة الشعار:</p>
+                    <div class="text-center">
+                        <div id="logoPreviewContainer">
+                            <span id="logoPreview" class="text-6xl">🌴</span>
+                            <img id="logoImagePreview" class="w-16 h-16 object-contain mx-auto hidden rounded-lg border-2 border-gray-300">
+                        </div>
+                        <p class="text-xl font-bold text-gray-800 mt-2">شركة نخلة</p>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 space-x-reverse">
+                    <button type="button" onclick="closeLogoModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300">
+                        إلغاء
+                    </button>
+                    <button type="button" onclick="applyLogo()" class="flex-1 btn-secondary text-white font-bold py-3 px-4 rounded-lg">
+                        🎨 تطبيق الشعار
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Modal -->
+    <div id="resetModal" class="modal">
+        <div class="modal-content">
+            <div class="bg-gradient-to-r from-red-500 to-rose-600 text-white p-6 rounded-t-2xl">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold flex items-center">
+                        <span class="ml-3 text-3xl">⚠️</span>
+                        تصفير النظام
+                    </h2>
+                    <button onclick="closeResetModal()" class="text-white hover:text-gray-200 text-2xl">✕</button>
+                </div>
+            </div>
+            <div class="p-8">
+                <div class="text-center mb-6">
+                    <div class="text-6xl mb-4">🚨</div>
+                    <p class="text-xl font-bold text-gray-800 mb-2">تحذير: عملية خطيرة!</p>
+                    <p class="text-gray-600">سيتم حذف جميع البيانات نهائياً ولا يمكن استرجاعها</p>
+                </div>
+                <form id="resetForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-3 text-center">أدخل كود الحماية للمتابعة:</label>
+                        <input type="password" id="resetCode" class="form-input w-full px-4 py-3 border-2 border-red-200 rounded-lg focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-center text-xl font-bold tracking-widest" placeholder="****" maxlength="4" required>
+                        <p class="text-sm text-gray-500 text-center mt-2">كود مكون من 4 أرقام</p>
+                    </div>
+                    <div class="flex space-x-4 space-x-reverse">
+                        <button type="button" onclick="closeResetModal()" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300">
+                            إلغاء
+                        </button>
+                        <button type="submit" class="flex-1 btn-danger text-white font-bold py-3 px-4 rounded-lg">
+                            🗑️ تصفير النظام
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Notifications Container -->
+    <div id="notifications" class="fixed top-4 left-4 z-50 space-y-2 pointer-events-none max-w-sm">
+        <!-- Notifications will be added here with pointer-events-auto -->
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="container mx-auto px-6 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="stats-card bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl p-4 text-white card-hover shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-emerald-100 text-xs font-medium">إجمالي الوصولات</p>
+                            <p class="text-xl font-bold mt-1" id="totalIncome">0 د.ع</p>
+                            <div class="flex items-center mt-1">
+                                <span class="text-emerald-200 text-xs">📈 الواردات اليومية</span>
+                            </div>
+                        </div>
+                        <div class="text-2xl pulse-animation">🚚</div>
+                    </div>
+                </div>
+                
+                <div class="stats-card bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl p-4 text-white card-hover shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-violet-100 text-xs font-medium">الاشتراكات الشهرية</p>
+                            <p class="text-xl font-bold mt-1" id="totalSubscriptions">0 د.ع</p>
+                            <div class="flex items-center mt-1">
+                                <span class="text-violet-200 text-xs">🔄 دخل ثابت</span>
+                            </div>
+                        </div>
+                        <div class="text-2xl pulse-animation">💎</div>
+                    </div>
+                </div>
+                
+                <div class="stats-card bg-gradient-to-br from-rose-500 to-red-600 rounded-xl p-4 text-white card-hover shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-rose-100 text-xs font-medium">إجمالي المصروفات</p>
+                            <p class="text-xl font-bold mt-1" id="totalExpenses">0 د.ع</p>
+                            <div class="flex items-center mt-1">
+                                <span class="text-rose-200 text-xs">📉 النفقات</span>
+                            </div>
+                        </div>
+                        <div class="text-2xl pulse-animation">💸</div>
+                    </div>
+                </div>
+                
+                <div class="stats-card bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl p-4 text-white card-hover shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-cyan-100 text-xs font-medium">الرصيد الصافي</p>
+                            <p class="text-xl font-bold mt-1" id="netBalance">0 د.ع</p>
+                            <div class="flex items-center mt-1">
+                                <span class="text-cyan-200 text-xs">💰 الربح الإجمالي</span>
+                            </div>
+                        </div>
+                        <div class="text-2xl pulse-animation">⭐</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Forms -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Daily Income -->
+            <div class="glass-effect rounded-xl shadow-xl p-5 card-hover">
+                <div class="text-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 floating-animation">
+                        <span class="text-xl">🚚</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">الوصولات اليومية</h3>
+                    <p class="text-gray-600 text-sm mt-1">إضافة واردات التوصيل</p>
+                </div>
+                <form id="incomeForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">سعر التوصيل (د.ع) <span class="text-red-500">*</span></label>
+                        <input type="text" id="incomeAmount" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 focus:border-green-500 text-sm" placeholder="أدخل المبلغ" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">اسم المندوب <span class="text-red-500">*</span></label>
+                        <input type="text" id="deliveryAgent" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 focus:border-green-500 text-sm" placeholder="أدخل اسم المندوب" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">رقم الوصل <span class="text-red-500">*</span></label>
+                        <input type="text" id="incomeDescription" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500/20 focus:border-green-500 text-sm" placeholder="أدخل رقم الوصل" required>
+                    </div>
+                    <button type="submit" class="btn-primary w-full text-white font-bold py-3 px-4 rounded-lg text-sm">
+                        ✅ إضافة وصل
+                    </button>
+                </form>
+            </div>
+
+            <!-- Monthly Subscriptions -->
+            <div class="glass-effect rounded-xl shadow-xl p-5 card-hover">
+                <div class="text-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-violet-600 rounded-full flex items-center justify-center mx-auto mb-3 floating-animation">
+                        <span class="text-xl">💎</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">الاشتراكات الشهرية</h3>
+                    <p class="text-gray-600 text-sm mt-1">إدارة الاشتراكات الثابتة</p>
+                </div>
+                <form id="subscriptionForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">المبلغ (د.ع)</label>
+                        <input type="text" id="subscriptionAmount" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 text-sm" placeholder="أدخل المبلغ" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">اسم الاشتراك</label>
+                        <input type="text" id="subscriptionName" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 text-sm" placeholder="نتفليكس، سبوتيفاي، إلخ" required>
+                    </div>
+                    <button type="submit" class="btn-secondary w-full text-white font-bold py-3 px-4 rounded-lg text-sm">
+                        🔄 إضافة اشتراك
+                    </button>
+                </form>
+            </div>
+
+            <!-- Expenses -->
+            <div class="glass-effect rounded-xl shadow-xl p-5 card-hover">
+                <div class="text-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-red-400 to-rose-600 rounded-full flex items-center justify-center mx-auto mb-3 floating-animation">
+                        <span class="text-xl">💸</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">المصروفات</h3>
+                    <p class="text-gray-600 text-sm mt-1">تسجيل النفقات اليومية</p>
+                </div>
+                <form id="expenseForm" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">المبلغ (د.ع)</label>
+                        <input type="text" id="expenseAmount" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-sm" placeholder="أدخل المبلغ" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">الوصف</label>
+                        <input type="text" id="expenseDescription" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-sm" placeholder="وصف المصروف" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2 text-sm">الفئة</label>
+                        <select id="expenseCategory" class="form-input w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500/20 focus:border-red-500 text-sm">
+                            <option value="انترنت مندوبين">📱 انترنت مندوبين</option>
+                            <option value="انترنت مكتب">🌐 انترنت مكتب</option>
+                            <option value="مولد">⚡ مولد</option>
+                            <option value="اكل">🍽️ اكل</option>
+                            <option value="طباعة وصولات">🖨️ طباعة وصولات</option>
+                            <option value="بند ورق">📄 بند ورق</option>
+                            <option value="حبر">🖋️ حبر</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-danger w-full text-white font-bold py-3 px-4 rounded-lg text-sm">
+                        💸 إضافة مصروف
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Monthly Statistics -->
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 mb-8">
+            <div class="text-center mb-8">
+                <h3 class="text-3xl font-bold text-gray-800 flex items-center justify-center">
+                    <span class="ml-3 text-4xl">📈</span>
+                    الإحصائيات الشهرية
+                </h3>
+                <p class="text-gray-600 mt-2">تتبع الواردات والاشتراكات شهرياً</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto mt-3 rounded-full"></div>
+            </div>
+            <div id="monthlyStats" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div class="text-center text-gray-500 col-span-full">
+                    <div class="text-6xl mb-4">📊</div>
+                    <p class="text-xl">لا توجد بيانات شهرية بعد</p>
+                    <p class="text-gray-400 mt-2">ابدأ بإضافة العمليات المالية</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Agents Statistics -->
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 mb-8">
+            <div class="text-center mb-8">
+                <h3 class="text-3xl font-bold text-gray-800 flex items-center justify-center">
+                    <span class="ml-3 text-4xl">👥</span>
+                    إحصائيات المندوبين
+                </h3>
+                <p class="text-gray-600 mt-2">أداء المندوبين وعدد الوصولات</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-green-400 to-blue-500 mx-auto mt-3 rounded-full"></div>
+            </div>
+            <div id="agentsStats" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="text-center text-gray-500 col-span-full">
+                    <div class="text-6xl mb-4">👤</div>
+                    <p class="text-xl">لا توجد بيانات مندوبين بعد</p>
+                    <p class="text-gray-400 mt-2">ابدأ بإضافة أول وصل لمندوب</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions History -->
+        <div class="glass-effect rounded-2xl shadow-2xl p-8">
+            <div class="text-center mb-8">
+                <h3 class="text-3xl font-bold text-gray-800 flex items-center justify-center">
+                    <span class="ml-3 text-4xl">📊</span>
+                    سجل العمليات المالية
+                </h3>
+                <p class="text-gray-600 mt-2">تتبع جميع المعاملات المالية</p>
+                <div class="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 mx-auto mt-3 rounded-full"></div>
+            </div>
+            <div class="flex justify-center mb-6 space-x-4 space-x-reverse">
+                <button onclick="showLogoModal()" class="btn-secondary px-6 py-3 text-white font-bold rounded-lg text-sm hover:shadow-lg transition-all duration-300">
+                    🏢 إضافة شعار الشركة
+                </button>
+                <button onclick="printMonthlyReport()" class="btn-primary px-6 py-3 text-white font-bold rounded-lg text-sm hover:shadow-lg transition-all duration-300">
+                    🖨️ طباعة التقرير الشهري
+                </button>
+                <button onclick="showResetModal()" class="btn-danger px-6 py-3 text-white font-bold rounded-lg text-sm hover:shadow-lg transition-all duration-300">
+                    🗑️ تصفير النظام
+                </button>
+            </div>
+            <div class="overflow-x-auto rounded-xl">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <th class="px-6 py-4 text-right text-gray-700 font-bold text-lg">📅 التاريخ</th>
+                            <th class="px-6 py-4 text-right text-gray-700 font-bold text-lg">🏷️ النوع</th>
+                            <th class="px-6 py-4 text-right text-gray-700 font-bold text-lg">👤 المندوب</th>
+                            <th class="px-6 py-4 text-right text-gray-700 font-bold text-lg">📝 الوصف</th>
+                            <th class="px-6 py-4 text-right text-gray-700 font-bold text-lg">💰 المبلغ</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="transactionsTable">
+                        <tr>
+                            <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                <div class="flex flex-col items-center">
+                                    <div class="text-6xl mb-4">📋</div>
+                                    <p class="text-xl">لا توجد عمليات مالية بعد</p>
+                                    <p class="text-gray-400 mt-2">ابدأ بإضافة أول عملية مالية</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Print Area -->
+    <div id="printArea" class="print-area" style="display: none;">
+        <!-- Print content will be generated here -->
+    </div>
+
+    <script>
+        // Data storage
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        let totals = {
+            income: 0,
+            expenses: 0,
+            subscriptions: 0
+        };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateTotals();
+            updateDisplay();
+            renderTransactions();
+            renderMonthlyStats();
+            renderAgentsStats();
+            loadCompanyLogo();
+            
+            // Initialize smart notifications
+            setTimeout(() => {
+                checkSpecialOccasions();
+                checkTimeBasedNotifications();
+                showWelcomeMessage();
+            }, 2000);
+            
+            // Check notifications periodically
+            setInterval(() => {
+                checkTimeBasedNotifications();
+                checkWeatherNotifications();
+            }, 300000); // Every 5 minutes
+        });
+
+        // Print Monthly Report Function
+        function printMonthlyReport() {
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            const monthNames = [
+                'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+                'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+            ];
+            
+            // Filter transactions for current month
+            const monthlyTransactions = transactions.filter(t => {
+                const tDate = new Date(t.timestamp);
+                return tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
+            });
+            
+            if (monthlyTransactions.length === 0) {
+                showNotification('❌ لا توجد بيانات للشهر الحالي للطباعة!', 'error');
+                return;
+            }
+            
+            // Calculate monthly statistics
+            const monthlyStats = {
+                deliveries: 0,
+                deliveriesAmount: 0,
+                subscriptions: 0,
+                subscriptionsAmount: 0,
+                expenses: 0,
+                expensesAmount: 0
+            };
+            
+            const agentStats = {};
+            const expenseCategories = {};
+            
+            monthlyTransactions.forEach(transaction => {
+                if (transaction.type === 'income') {
+                    if (transaction.description.includes('اشتراك')) {
+                        monthlyStats.subscriptions++;
+                        monthlyStats.subscriptionsAmount += transaction.amount;
+                    } else {
+                        monthlyStats.deliveries++;
+                        monthlyStats.deliveriesAmount += transaction.amount;
+                        
+                        // Agent statistics
+                        if (transaction.agent) {
+                            if (!agentStats[transaction.agent]) {
+                                agentStats[transaction.agent] = { count: 0, amount: 0 };
+                            }
+                            agentStats[transaction.agent].count++;
+                            agentStats[transaction.agent].amount += transaction.amount;
+                        }
+                    }
+                } else if (transaction.type === 'expense') {
+                    monthlyStats.expenses++;
+                    monthlyStats.expensesAmount += transaction.amount;
+                    
+                    // Expense categories
+                    const category = transaction.category || 'غير محدد';
+                    if (!expenseCategories[category]) {
+                        expenseCategories[category] = { count: 0, amount: 0 };
+                    }
+                    expenseCategories[category].count++;
+                    expenseCategories[category].amount += transaction.amount;
+                }
+            });
+            
+            const totalIncome = monthlyStats.deliveriesAmount + monthlyStats.subscriptionsAmount;
+            const netProfit = totalIncome - monthlyStats.expensesAmount;
+            
+            // Generate print content
+            const logoDisplay = companyLogoType === 'image' && companyLogoImage ? 
+                `<img src="${companyLogoImage}" style="width: 40px; height: 40px; object-fit: contain; display: inline-block; vertical-align: middle; margin-left: 10px; border-radius: 5px;">` : 
+                companyLogo;
+            
+            const printContent = `
+                <div class="print-header">
+                    <h1 style="font-size: 24px; margin-bottom: 10px;">${logoDisplay} شركة نخلة للتوصيل</h1>
+                    <h2 style="font-size: 20px; margin-bottom: 5px;">التقرير المالي الشهري</h2>
+                    <h3 style="font-size: 16px; color: #666;">${monthNames[currentMonth]} ${currentYear}</h3>
+                    <p style="margin-top: 10px; font-size: 12px;">تاريخ الطباعة: ${new Date().toLocaleDateString('ar-EG')} - ${new Date().toLocaleTimeString('ar-EG')}</p>
+                </div>
+                
+                <div class="print-section">
+                    <h3 style="font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid #000; padding-bottom: 5px;">📊 الملخص المالي</h3>
+                    <div class="print-summary">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; font-weight: bold;">إجمالي الوصولات (${monthlyStats.deliveries} وصل)</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; text-align: left; font-weight: bold;">${monthlyStats.deliveriesAmount.toLocaleString()} د.ع</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; font-weight: bold;">الاشتراكات الشهرية (${monthlyStats.subscriptions} اشتراك)</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; text-align: left; font-weight: bold;">${monthlyStats.subscriptionsAmount.toLocaleString()} د.ع</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; font-weight: bold; color: #059669;">إجمالي الإيرادات</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; text-align: left; font-weight: bold; color: #059669;">${totalIncome.toLocaleString()} د.ع</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; font-weight: bold; color: #dc2626;">إجمالي المصروفات (${monthlyStats.expenses} مصروف)</td>
+                                <td style="padding: 8px; border-bottom: 1px solid #ccc; text-align: left; font-weight: bold; color: #dc2626;">${monthlyStats.expensesAmount.toLocaleString()} د.ع</td>
+                            </tr>
+                            <tr style="background-color: #f0f0f0;">
+                                <td style="padding: 12px; font-weight: bold; font-size: 14px; color: ${netProfit >= 0 ? '#059669' : '#dc2626'};">صافي الربح</td>
+                                <td style="padding: 12px; text-align: left; font-weight: bold; font-size: 14px; color: ${netProfit >= 0 ? '#059669' : '#dc2626'};">${netProfit.toLocaleString()} د.ع</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                ${Object.keys(agentStats).length > 0 ? `
+                <div class="print-section">
+                    <h3 style="font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid #000; padding-bottom: 5px;">👥 إحصائيات المندوبين</h3>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th>اسم المندوب</th>
+                                <th>عدد الوصولات</th>
+                                <th>إجمالي المبلغ</th>
+                                <th>متوسط الوصل</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(agentStats)
+                                .sort(([,a], [,b]) => b.count - a.count)
+                                .map(([agent, stats]) => `
+                                <tr>
+                                    <td>${agent}</td>
+                                    <td>${stats.count}</td>
+                                    <td>${stats.amount.toLocaleString()} د.ع</td>
+                                    <td>${Math.round(stats.amount / stats.count).toLocaleString()} د.ع</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                ` : ''}
+                
+                ${Object.keys(expenseCategories).length > 0 ? `
+                <div class="print-section">
+                    <h3 style="font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid #000; padding-bottom: 5px;">💸 تفصيل المصروفات</h3>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th>فئة المصروف</th>
+                                <th>عدد المرات</th>
+                                <th>إجمالي المبلغ</th>
+                                <th>النسبة من المصروفات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(expenseCategories)
+                                .sort(([,a], [,b]) => b.amount - a.amount)
+                                .map(([category, stats]) => `
+                                <tr>
+                                    <td>${category}</td>
+                                    <td>${stats.count}</td>
+                                    <td>${stats.amount.toLocaleString()} د.ع</td>
+                                    <td>${((stats.amount / monthlyStats.expensesAmount) * 100).toFixed(1)}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                ` : ''}
+                
+                <div class="print-section">
+                    <h3 style="font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid #000; padding-bottom: 5px;">📋 سجل العمليات المالية</h3>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th>التاريخ</th>
+                                <th>النوع</th>
+                                <th>المندوب</th>
+                                <th>الوصف</th>
+                                <th>المبلغ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${monthlyTransactions.map(transaction => {
+                                const typeText = transaction.type === 'income' ? 
+                                    (transaction.description.includes('اشتراك') ? 'اشتراك' : 'وصل') : 'مصروف';
+                                return `
+                                <tr>
+                                    <td>${transaction.date}</td>
+                                    <td>${typeText}</td>
+                                    <td>${transaction.agent || '-'}</td>
+                                    <td>${transaction.description}</td>
+                                    <td style="color: ${transaction.type === 'expense' ? '#dc2626' : '#059669'};">${transaction.amount.toLocaleString()} د.ع</td>
+                                </tr>
+                            `;}).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #ccc; padding-top: 15px;">
+                    <p>تم إنشاء هذا التقرير بواسطة نظام شركة نخلة للحسابات المالية</p>
+                    <p>للاستفسارات والدعم الفني يرجى التواصل مع إدارة النظام</p>
+                </div>
+            `;
+            
+            // Set print content and trigger print
+            document.getElementById('printArea').innerHTML = printContent;
+            document.getElementById('printArea').style.display = 'block';
+            
+            // Show notification and print
+            showNotification('🖨️ جاري تحضير التقرير للطباعة...', 'info', 3000);
+            
+            setTimeout(() => {
+                window.print();
+                
+                // Hide print area after printing
+                setTimeout(() => {
+                    document.getElementById('printArea').style.display = 'none';
+                }, 1000);
+            }, 500);
+        }
+
+        // Enhanced notification system with smart alerts
+        function showNotification(message, type = 'success', duration = 5000, sound = true) {
+            const notification = document.createElement('div');
+            const isSpecial = type === 'achievement' || type === 'celebration';
+            
+            notification.className = `notification px-6 py-4 rounded-xl shadow-2xl text-white pointer-events-auto ${
+                type === 'success' ? 'bg-gradient-to-r from-green-500 to-emerald-600' : 
+                type === 'error' ? 'bg-gradient-to-r from-red-500 to-rose-600' : 
+                type === 'info' ? 'bg-gradient-to-r from-blue-500 to-cyan-600' : 
+                type === 'warning' ? 'bg-gradient-to-r from-orange-500 to-amber-600' :
+                type === 'achievement' ? 'bg-gradient-to-r from-purple-500 to-pink-600 notification-achievement' :
+                type === 'celebration' ? 'bg-gradient-to-r from-yellow-400 to-orange-500 notification-celebration' :
+                'bg-gradient-to-r from-purple-500 to-violet-600'
+            }`;
+            
+            // Play notification sound
+            if (sound) {
+                playNotificationSound(type);
+            }
+            
+            notification.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-2xl ml-3 ${isSpecial ? 'animate-bounce' : ''}">${getNotificationIcon(type)}</span>
+                        <span class="font-medium">${message}</span>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="mr-4 text-white hover:text-gray-200 text-xl">✕</button>
+                </div>
+            `;
+            
+            document.getElementById('notifications').appendChild(notification);
+            
+            // Auto remove after specified duration
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.classList.add('fade-out');
+                    setTimeout(() => notification.remove(), 500);
+                }
+            }, duration);
+        }
+
+        // Get notification icon based on type
+        function getNotificationIcon(type) {
+            const icons = {
+                'success': '✅',
+                'error': '❌',
+                'info': 'ℹ️',
+                'warning': '⚠️',
+                'achievement': '🏆',
+                'milestone': '🎯',
+                'celebration': '🎉'
+            };
+            return icons[type] || '📢';
+        }
+
+        // Play notification sound (using Web Audio API for better browser support)
+        function playNotificationSound(type) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Different frequencies for different notification types
+                const frequencies = {
+                    'success': [523, 659, 784], // C-E-G chord
+                    'error': [220, 185], // Low warning tones
+                    'info': [440], // Single A note
+                    'warning': [330, 370], // Warning beeps
+                    'achievement': [523, 659, 784, 1047], // Victory fanfare
+                    'celebration': [392, 523, 659, 784, 1047] // Full celebration
+                };
+                
+                const freqs = frequencies[type] || [440];
+                
+                freqs.forEach((freq, index) => {
+                    setTimeout(() => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+                        
+                        osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                        osc.type = type === 'achievement' || type === 'celebration' ? 'sine' : 'square';
+                        
+                        gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                        
+                        osc.start(audioContext.currentTime);
+                        osc.stop(audioContext.currentTime + 0.2);
+                    }, index * 100);
+                });
+            } catch (e) {
+                // Fallback for browsers that don't support Web Audio API
+                console.log('Audio notification not supported');
+            }
+        }
+
+        // Welcome message
+        function showWelcomeMessage() {
+            const hour = new Date().getHours();
+            let greeting = '';
+            
+            if (hour < 12) {
+                greeting = '🌅 صباح الخير! يوم عمل جديد مليء بالفرص!';
+            } else if (hour < 17) {
+                greeting = '☀️ مساء الخير! استمر في العمل الرائع!';
+            } else {
+                greeting = '🌆 مساء الخير! كيف كان يوم العمل؟';
+            }
+            
+            setTimeout(() => {
+                showNotification(greeting, 'info', 4000);
+            }, 1000);
+        }
+
+        // Smart notification system
+        function checkSmartNotifications() {
+            checkDailyGoals();
+            checkMilestones();
+            checkWarnings();
+            checkEncouragement();
+        }
+
+        // Check daily goals
+        function checkDailyGoals() {
+            const today = new Date().toDateString();
+            const todayTransactions = transactions.filter(t => new Date(t.timestamp).toDateString() === today);
+            const todayDeliveries = todayTransactions.filter(t => t.type === 'income' && !t.description.includes('اشتراك'));
+            
+            if (todayDeliveries.length === 10) {
+                showNotification('🎯 مبروك! وصلت لـ 10 وصولات اليوم!', 'milestone', 7000);
+            } else if (todayDeliveries.length === 25) {
+                showNotification('🔥 رائع! 25 وصل في يوم واحد! أداء استثنائي!', 'achievement', 8000);
+            } else if (todayDeliveries.length === 50) {
+                showNotification('👑 أسطوري! 50 وصل في يوم واحد! أنت بطل!', 'celebration', 10000);
+            }
+        }
+
+        // Check milestones
+        function checkMilestones() {
+            const totalDeliveries = transactions.filter(t => t.type === 'income' && !t.description.includes('اشتراك')).length;
+            const totalRevenue = totals.income + totals.subscriptions;
+            
+            // Delivery milestones
+            if (totalDeliveries === 100) {
+                showNotification('🎉 مبروك! وصلت للوصل رقم 100!', 'achievement', 8000);
+            } else if (totalDeliveries === 500) {
+                showNotification('🏆 إنجاز رائع! 500 وصل مكتمل!', 'achievement', 8000);
+            } else if (totalDeliveries === 1000) {
+                showNotification('👑 ألف مبروك! 1000 وصل! إنجاز تاريخي!', 'celebration', 10000);
+            }
+            
+            // Revenue milestones
+            if (totalRevenue >= 1000000 && totalRevenue < 1010000) {
+                showNotification('💰 مليون دينار! إنجاز مالي رائع!', 'achievement', 8000);
+            } else if (totalRevenue >= 5000000 && totalRevenue < 5010000) {
+                showNotification('💎 5 مليون دينار! نمو استثنائي!', 'celebration', 10000);
+            }
+        }
+
+        // Check warnings
+        function checkWarnings() {
+            const thisMonth = new Date().getMonth();
+            const thisYear = new Date().getFullYear();
+            const monthlyExpenses = transactions.filter(t => {
+                const tDate = new Date(t.timestamp);
+                return t.type === 'expense' && tDate.getMonth() === thisMonth && tDate.getFullYear() === thisYear;
+            }).reduce((sum, t) => sum + t.amount, 0);
+            
+            const monthlyIncome = transactions.filter(t => {
+                const tDate = new Date(t.timestamp);
+                return t.type === 'income' && tDate.getMonth() === thisMonth && tDate.getFullYear() === thisYear;
+            }).reduce((sum, t) => sum + t.amount, 0);
+            
+            // High expenses warning
+            if (monthlyExpenses > monthlyIncome * 0.7 && monthlyIncome > 0) {
+                showNotification('⚠️ تحذير: المصروفات عالية هذا الشهر! راجع الميزانية', 'warning', 8000);
+            }
+            
+            // Low activity warning
+            const today = new Date().toDateString();
+            const todayTransactions = transactions.filter(t => new Date(t.timestamp).toDateString() === today);
+            if (todayTransactions.length === 0 && new Date().getHours() > 12) {
+                showNotification('📝 تذكير: لم تسجل أي عمليات اليوم بعد', 'info', 6000);
+            }
+        }
+
+        // Encouraging messages
+        function checkEncouragement() {
+            const encouragingMessages = [
+                '💪 استمر في العمل الرائع!',
+                '🌟 كل وصل يقربك من النجاح!',
+                '🚀 شركة نخلة في نمو مستمر!',
+                '⭐ أداؤك اليوم ممتاز!',
+                '🎯 هدفك القادم في الطريق!',
+                '💎 جودة الخدمة هي سر النجاح!',
+                '🏆 أنت تبني إمبراطورية التوصيل!',
+                '🌴 نخلة تنمو بفضل جهودك!'
+            ];
+            
+            // Show encouraging message randomly (3% chance per transaction)
+            if (Math.random() < 0.03) {
+                const randomMessage = encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
+                setTimeout(() => {
+                    showNotification(randomMessage, 'info', 4000);
+                }, 2000);
+            }
+        }
+
+        // Time-based notifications
+        function checkTimeBasedNotifications() {
+            const hour = new Date().getHours();
+            const lastShownToday = localStorage.getItem('lastTimeNotification');
+            const today = new Date().toDateString();
+            
+            if (lastShownToday !== today) {
+                if (hour === 8) {
+                    showNotification('🌅 صباح الخير! يوم عمل جديد مليء بالفرص!', 'info', 6000);
+                    localStorage.setItem('lastTimeNotification', today);
+                } else if (hour === 12) {
+                    showNotification('☀️ وقت الغداء! لا تنس أخذ استراحة', 'info', 5000);
+                    localStorage.setItem('lastTimeNotification', today);
+                } else if (hour === 18) {
+                    showNotification('🌆 مساء الخير! كيف كان يوم العمل؟', 'info', 5000);
+                    localStorage.setItem('lastTimeNotification', today);
+                }
+            }
+        }
+
+        // Weather-based notifications (simulated)
+        function checkWeatherNotifications() {
+            const weatherMessages = [
+                '🌧️ الطقس ممطر اليوم، انتبه للسلامة!',
+                '☀️ طقس مشمس رائع للعمل!',
+                '🌪️ رياح قوية، كن حذراً في الطريق!',
+                '❄️ طقس بارد، البس ملابس دافئة!',
+                '🌡️ حر شديد، اشرب ماء كثير!'
+            ];
+            
+            // Show weather notification randomly (1% chance)
+            if (Math.random() < 0.01) {
+                const randomWeather = weatherMessages[Math.floor(Math.random() * weatherMessages.length)];
+                setTimeout(() => {
+                    showNotification(randomWeather, 'info', 6000);
+                }, 3000);
+            }
+        }
+
+        // Special occasion notifications
+        function checkSpecialOccasions() {
+            const today = new Date();
+            const month = today.getMonth() + 1;
+            const day = today.getDate();
+            
+            // Iraqi holidays and special days
+            const occasions = {
+                '1-1': '🎊 كل عام وأنتم بخير! سنة جديدة سعيدة!',
+                '7-14': '🇮🇶 عيد الجمهورية العراقية المجيد!',
+                '4-9': '🏛️ ذكرى سقوط النظام - يوم التحرير',
+                '10-3': '🇮🇶 اليوم الوطني العراقي',
+                '12-25': '🎄 كريسماس مجيد لجميع الأصدقاء المسيحيين!'
+            };
+            
+            const todayKey = `${month}-${day}`;
+            if (occasions[todayKey]) {
+                const lastShown = localStorage.getItem('lastOccasionNotification');
+                if (lastShown !== todayKey) {
+                    setTimeout(() => {
+                        showNotification(occasions[todayKey], 'celebration', 8000);
+                        localStorage.setItem('lastOccasionNotification', todayKey);
+                    }, 1000);
+                }
+            }
+        }
+
+        // Show reset modal
+        function showResetModal() {
+            document.getElementById('resetModal').style.display = 'block';
+            document.getElementById('resetCode').focus();
+        }
+
+        // Close reset modal
+        function closeResetModal() {
+            document.getElementById('resetModal').style.display = 'none';
+            document.getElementById('resetForm').reset();
+        }
+
+        // Handle reset form
+        document.getElementById('resetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const code = document.getElementById('resetCode').value;
+            
+            if (code === '1097') {
+                // Clear all data
+                transactions = [];
+                localStorage.removeItem('transactions');
+                
+                // Reset display
+                calculateTotals();
+                updateDisplay();
+                renderTransactions();
+                renderMonthlyStats();
+                renderAgentsStats();
+                
+                closeResetModal();
+                showNotification('🗑️ تم تصفير النظام بنجاح! جميع البيانات محذوفة.', 'success');
+            } else {
+                showNotification('❌ كود الحماية خاطئ! يرجى المحاولة مرة أخرى.', 'error');
+                document.getElementById('resetCode').value = '';
+                document.getElementById('resetCode').focus();
+            }
+        });
+
+        // Logo Management Functions
+        let selectedLogo = '🌴';
+        let selectedLogoType = 'emoji'; // 'emoji' or 'image'
+        let selectedImageData = null;
+        let companyLogo = localStorage.getItem('companyLogo') || '🌴';
+        let companyLogoType = localStorage.getItem('companyLogoType') || 'emoji';
+        let companyLogoImage = localStorage.getItem('companyLogoImage') || null;
+
+        // Load company logo
+        function loadCompanyLogo() {
+            if (companyLogoType === 'image' && companyLogoImage) {
+                // Show image logo
+                const logoElements = document.querySelectorAll('.company-logo');
+                const logoImageElements = document.querySelectorAll('.company-logo-image');
+                
+                logoElements.forEach(element => {
+                    element.style.display = 'none';
+                });
+                
+                logoImageElements.forEach(element => {
+                    element.src = companyLogoImage;
+                    element.classList.remove('hidden');
+                    element.style.display = 'inline-block';
+                });
+            } else {
+                // Show emoji logo
+                const logoElements = document.querySelectorAll('.company-logo');
+                const logoImageElements = document.querySelectorAll('.company-logo-image');
+                
+                logoElements.forEach(element => {
+                    element.textContent = companyLogo;
+                    element.style.display = 'inline';
+                });
+                
+                logoImageElements.forEach(element => {
+                    element.classList.add('hidden');
+                    element.style.display = 'none';
+                });
+            }
+        }
+
+        // Show logo modal
+        function showLogoModal() {
+            document.getElementById('logoModal').style.display = 'block';
+            selectedLogo = companyLogo;
+            selectedLogoType = companyLogoType;
+            selectedImageData = companyLogoImage;
+            
+            // Update preview
+            updateLogoPreview();
+            
+            // Clear previous selections
+            document.querySelectorAll('.logo-option').forEach(option => {
+                option.classList.remove('border-purple-500', 'bg-purple-50');
+                option.classList.add('border-gray-200');
+            });
+            
+            // Clear custom input and image upload
+            document.getElementById('customLogo').value = '';
+            resetImageUpload();
+        }
+
+        // Close logo modal
+        function closeLogoModal() {
+            document.getElementById('logoModal').style.display = 'none';
+        }
+
+        // Select predefined logo
+        function selectLogo(logoType) {
+            const logos = {
+                'palm': '🌴',
+                'delivery': '🚚',
+                'star': '⭐',
+                'crown': '👑',
+                'diamond': '💎',
+                'rocket': '🚀'
+            };
+            
+            selectedLogo = logos[logoType];
+            selectedLogoType = 'emoji';
+            selectedImageData = null;
+            
+            updateLogoPreview();
+            document.getElementById('customLogo').value = '';
+            resetImageUpload();
+            
+            // Update visual selection
+            document.querySelectorAll('.logo-option').forEach(option => {
+                option.classList.remove('border-purple-500', 'bg-purple-50');
+                option.classList.add('border-gray-200');
+            });
+            
+            event.target.closest('.logo-option').classList.remove('border-gray-200');
+            event.target.closest('.logo-option').classList.add('border-purple-500', 'bg-purple-50');
+        }
+
+        // Handle custom logo input
+        document.getElementById('customLogo').addEventListener('input', function() {
+            if (this.value.trim()) {
+                selectedLogo = this.value.trim();
+                selectedLogoType = 'emoji';
+                selectedImageData = null;
+                
+                updateLogoPreview();
+                resetImageUpload();
+                
+                // Clear predefined selections
+                document.querySelectorAll('.logo-option').forEach(option => {
+                    option.classList.remove('border-purple-500', 'bg-purple-50');
+                    option.classList.add('border-gray-200');
+                });
+            }
+        });
+
+        // Apply selected logo
+        function applyLogo() {
+            if (selectedLogoType === 'emoji' && (!selectedLogo || selectedLogo.trim() === '')) {
+                showNotification('❌ يرجى اختيار شعار أولاً!', 'error');
+                return;
+            }
+            
+            if (selectedLogoType === 'image' && !selectedImageData) {
+                showNotification('❌ يرجى رفع صورة الشعار أولاً!', 'error');
+                return;
+            }
+            
+            // Save logo data
+            companyLogo = selectedLogo;
+            companyLogoType = selectedLogoType;
+            companyLogoImage = selectedImageData;
+            
+            localStorage.setItem('companyLogo', companyLogo);
+            localStorage.setItem('companyLogoType', companyLogoType);
+            if (companyLogoImage) {
+                localStorage.setItem('companyLogoImage', companyLogoImage);
+            } else {
+                localStorage.removeItem('companyLogoImage');
+            }
+            
+            // Update all logo elements
+            loadCompanyLogo();
+            
+            closeLogoModal();
+            
+            const logoDisplay = selectedLogoType === 'image' ? 'صورة مخصصة' : selectedLogo;
+            showNotification(`🎨 تم تطبيق الشعار الجديد ${logoDisplay} بنجاح!`, 'success');
+        }
+
+        // Image upload functions
+        function updateLogoPreview() {
+            const logoPreview = document.getElementById('logoPreview');
+            const logoImagePreview = document.getElementById('logoImagePreview');
+            
+            if (selectedLogoType === 'image' && selectedImageData) {
+                logoPreview.style.display = 'none';
+                logoImagePreview.src = selectedImageData;
+                logoImagePreview.classList.remove('hidden');
+            } else {
+                logoPreview.textContent = selectedLogo;
+                logoPreview.style.display = 'inline';
+                logoImagePreview.classList.add('hidden');
+            }
+        }
+        
+        function resetImageUpload() {
+            document.getElementById('logoImageInput').value = '';
+            document.getElementById('uploadArea').classList.remove('hidden');
+            document.getElementById('imagePreviewArea').classList.add('hidden');
+        }
+        
+        function removeUploadedImage() {
+            selectedImageData = null;
+            selectedLogoType = 'emoji';
+            resetImageUpload();
+            updateLogoPreview();
+            
+            // Clear other selections
+            document.getElementById('customLogo').value = '';
+            document.querySelectorAll('.logo-option').forEach(option => {
+                option.classList.remove('border-purple-500', 'bg-purple-50');
+                option.classList.add('border-gray-200');
+            });
+        }
+        
+        // Handle image upload
+        document.getElementById('logoImageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showNotification('❌ يرجى اختيار ملف صورة صحيح!', 'error');
+                return;
+            }
+            
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('❌ حجم الصورة كبير جداً! الحد الأقصى 5MB', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Create canvas to resize image if needed
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Set max dimensions
+                    const maxWidth = 200;
+                    const maxHeight = 200;
+                    
+                    let { width, height } = img;
+                    
+                    // Calculate new dimensions
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = (height * maxWidth) / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = (width * maxHeight) / height;
+                            height = maxHeight;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    // Draw and compress image
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convert to base64 with compression
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    
+                    // Update selection
+                    selectedImageData = compressedDataUrl;
+                    selectedLogoType = 'image';
+                    selectedLogo = '';
+                    
+                    // Update UI
+                    document.getElementById('uploadedImagePreview').src = compressedDataUrl;
+                    document.getElementById('uploadArea').classList.add('hidden');
+                    document.getElementById('imagePreviewArea').classList.remove('hidden');
+                    
+                    updateLogoPreview();
+                    
+                    // Clear other selections
+                    document.getElementById('customLogo').value = '';
+                    document.querySelectorAll('.logo-option').forEach(option => {
+                        option.classList.remove('border-purple-500', 'bg-purple-50');
+                        option.classList.add('border-gray-200');
+                    });
+                    
+                    showNotification('✅ تم رفع الصورة بنجاح!', 'success');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const resetModal = document.getElementById('resetModal');
+            const logoModal = document.getElementById('logoModal');
+            
+            if (event.target === resetModal) {
+                closeResetModal();
+            } else if (event.target === logoModal) {
+                closeLogoModal();
+            }
+        }
+
+        // Render monthly statistics
+        function renderMonthlyStats() {
+            const monthlyContainer = document.getElementById('monthlyStats');
+            
+            // Calculate monthly statistics
+            const monthlyStats = {};
+            transactions.forEach(transaction => {
+                const date = new Date(transaction.timestamp);
+                const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                const monthName = `${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                
+                if (!monthlyStats[monthKey]) {
+                    monthlyStats[monthKey] = {
+                        monthName: monthName,
+                        deliveries: 0,
+                        deliveriesAmount: 0,
+                        subscriptions: 0,
+                        subscriptionsAmount: 0,
+                        expenses: 0,
+                        expensesAmount: 0,
+                        total: 0
+                    };
+                }
+                
+                if (transaction.type === 'income') {
+                    if (transaction.description.includes('اشتراك')) {
+                        monthlyStats[monthKey].subscriptions++;
+                        monthlyStats[monthKey].subscriptionsAmount += transaction.amount;
+                    } else {
+                        monthlyStats[monthKey].deliveries++;
+                        monthlyStats[monthKey].deliveriesAmount += transaction.amount;
+                    }
+                } else if (transaction.type === 'expense') {
+                    monthlyStats[monthKey].expenses++;
+                    monthlyStats[monthKey].expensesAmount += transaction.amount;
+                }
+                
+                monthlyStats[monthKey].total = monthlyStats[monthKey].deliveriesAmount + 
+                                               monthlyStats[monthKey].subscriptionsAmount - 
+                                               monthlyStats[monthKey].expensesAmount;
+            });
+            
+            const months = Object.keys(monthlyStats).sort().reverse(); // Most recent first
+            
+            if (months.length === 0) {
+                monthlyContainer.innerHTML = `
+                    <div class="text-center text-gray-500 col-span-full">
+                        <div class="text-6xl mb-4">📊</div>
+                        <p class="text-xl">لا توجد بيانات شهرية بعد</p>
+                        <p class="text-gray-400 mt-2">ابدأ بإضافة العمليات المالية</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            monthlyContainer.innerHTML = months.map((monthKey, index) => {
+                const stats = monthlyStats[monthKey];
+                const colors = [
+                    'from-blue-500 to-cyan-600',
+                    'from-green-500 to-emerald-600', 
+                    'from-purple-500 to-violet-600',
+                    'from-orange-500 to-red-600',
+                    'from-pink-500 to-rose-600',
+                    'from-indigo-500 to-blue-600',
+                    'from-teal-500 to-cyan-600',
+                    'from-amber-500 to-orange-600'
+                ];
+                const colorClass = colors[index % colors.length];
+                
+                return `
+                    <div class="stats-card bg-gradient-to-br ${colorClass} rounded-xl p-6 text-white card-hover shadow-xl">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl">📅</span>
+                            </div>
+                            <h4 class="text-lg font-bold mb-4">${stats.monthName}</h4>
+                            <div class="space-y-3">
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-white/80 text-sm">🚚 الوصولات</span>
+                                        <span class="text-white font-bold">${stats.deliveries}</span>
+                                    </div>
+                                    <p class="text-lg font-bold">${stats.deliveriesAmount.toLocaleString()} د.ع</p>
+                                </div>
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-white/80 text-sm">💎 الاشتراكات</span>
+                                        <span class="text-white font-bold">${stats.subscriptions}</span>
+                                    </div>
+                                    <p class="text-lg font-bold">${stats.subscriptionsAmount.toLocaleString()} د.ع</p>
+                                </div>
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <span class="text-white/80 text-sm">💸 المصروفات</span>
+                                        <span class="text-white font-bold">${stats.expenses}</span>
+                                    </div>
+                                    <p class="text-lg font-bold">${stats.expensesAmount.toLocaleString()} د.ع</p>
+                                </div>
+                                <div class="bg-white/20 rounded-lg p-3 border-2 border-white/30">
+                                    <p class="text-white/90 text-sm mb-1">💰 الصافي</p>
+                                    <p class="text-xl font-bold ${stats.total >= 0 ? 'text-green-200' : 'text-red-200'}">${stats.total.toLocaleString()} د.ع</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render agents statistics
+        function renderAgentsStats() {
+            const agentsContainer = document.getElementById('agentsStats');
+            
+            // Calculate agent statistics
+            const agentStats = {};
+            transactions.forEach(transaction => {
+                if (transaction.type === 'income' && transaction.agent && !transaction.description.includes('اشتراك')) {
+                    if (!agentStats[transaction.agent]) {
+                        agentStats[transaction.agent] = {
+                            name: transaction.agent,
+                            deliveries: 0,
+                            totalAmount: 0
+                        };
+                    }
+                    agentStats[transaction.agent].deliveries++;
+                    agentStats[transaction.agent].totalAmount += transaction.amount;
+                }
+            });
+            
+            const agents = Object.values(agentStats);
+            
+            if (agents.length === 0) {
+                agentsContainer.innerHTML = `
+                    <div class="text-center text-gray-500 col-span-full">
+                        <div class="text-6xl mb-4">👤</div>
+                        <p class="text-xl">لا توجد بيانات مندوبين بعد</p>
+                        <p class="text-gray-400 mt-2">ابدأ بإضافة أول وصل لمندوب</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort agents by number of deliveries (descending)
+            agents.sort((a, b) => b.deliveries - a.deliveries);
+            
+            agentsContainer.innerHTML = agents.map((agent, index) => {
+                const colors = [
+                    'from-blue-500 to-cyan-600',
+                    'from-green-500 to-emerald-600', 
+                    'from-purple-500 to-violet-600',
+                    'from-orange-500 to-red-600',
+                    'from-pink-500 to-rose-600',
+                    'from-indigo-500 to-blue-600'
+                ];
+                const colorClass = colors[index % colors.length];
+                
+                const avgPerDelivery = agent.totalAmount / agent.deliveries;
+                
+                return `
+                    <div class="stats-card bg-gradient-to-br ${colorClass} rounded-xl p-6 text-white card-hover shadow-xl">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="text-2xl">🚚</span>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2">${agent.name}</h4>
+                            <div class="space-y-2">
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <p class="text-white/80 text-sm">عدد الوصولات</p>
+                                    <p class="text-2xl font-bold">${agent.deliveries}</p>
+                                </div>
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <p class="text-white/80 text-sm">إجمالي المبلغ</p>
+                                    <p class="text-lg font-bold">${agent.totalAmount.toLocaleString()} د.ع</p>
+                                </div>
+                                <div class="bg-white/10 rounded-lg p-3">
+                                    <p class="text-white/80 text-sm">متوسط الوصل</p>
+                                    <p class="text-lg font-bold">${Math.round(avgPerDelivery).toLocaleString()} د.ع</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Add income with complete validation
+        document.getElementById('incomeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const amount = getNumericValue(document.getElementById('incomeAmount'));
+            const agent = document.getElementById('deliveryAgent').value.trim();
+            const description = document.getElementById('incomeDescription').value.trim();
+            
+            // Check if all fields are filled
+            if (!amount || amount <= 0) {
+                showNotification('❌ يرجى إدخال مبلغ صحيح للوصل!', 'error');
+                document.getElementById('incomeAmount').focus();
+                return;
+            }
+            
+            if (!agent) {
+                showNotification('❌ يرجى إدخال اسم المندوب!', 'error');
+                document.getElementById('deliveryAgent').focus();
+                return;
+            }
+            
+            if (!description) {
+                showNotification('❌ يرجى إدخال رقم الوصل!', 'error');
+                document.getElementById('incomeDescription').focus();
+                return;
+            }
+            
+            // Check if receipt number already exists
+            const existingReceipt = transactions.find(transaction => 
+                transaction.type === 'income' && 
+                !transaction.description.includes('اشتراك') &&
+                transaction.description === description
+            );
+            
+            if (existingReceipt) {
+                showNotification(`❌ رقم الوصل ${description} موجود مسبقاً! يرجى استخدام رقم وصل مختلف.`, 'error');
+                document.getElementById('incomeDescription').focus();
+                document.getElementById('incomeDescription').select();
+                return;
+            }
+            
+            const transaction = {
+                id: Date.now(),
+                type: 'income',
+                amount: amount,
+                agent: agent,
+                description: description,
+                date: new Date().toLocaleDateString('ar-EG'),
+                timestamp: new Date()
+            };
+            
+            transactions.unshift(transaction);
+            saveData();
+            calculateTotals();
+            updateDisplay();
+            renderTransactions();
+            renderMonthlyStats();
+            renderAgentsStats();
+            
+            // Check for achievements after adding
+            setTimeout(() => {
+                checkSmartNotifications();
+            }, 1000);
+            
+            showNotification(`✅ تم إضافة وصل رقم ${description} للمندوب ${agent} بقيمة ${amount.toLocaleString()} د.ع بنجاح!`, 'success');
+            this.reset();
+        });
+
+        // Add subscription
+        document.getElementById('subscriptionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const amount = getNumericValue(document.getElementById('subscriptionAmount'));
+            const name = document.getElementById('subscriptionName').value;
+            
+            const transaction = {
+                id: Date.now(),
+                type: 'income',
+                amount: amount,
+                description: `اشتراك ${name}`,
+                date: new Date().toLocaleDateString('ar-EG'),
+                timestamp: new Date()
+            };
+            
+            transactions.unshift(transaction);
+            saveData();
+            calculateTotals();
+            updateDisplay();
+            renderTransactions();
+            renderMonthlyStats();
+            
+            showNotification(`🔄 تم إضافة اشتراك ${name} بقيمة ${amount.toLocaleString()} د.ع!`, 'info');
+            this.reset();
+        });
+
+        // Add expense
+        document.getElementById('expenseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const amount = getNumericValue(document.getElementById('expenseAmount'));
+            const description = document.getElementById('expenseDescription').value;
+            const category = document.getElementById('expenseCategory').value;
+            
+            const transaction = {
+                id: Date.now(),
+                type: 'expense',
+                amount: amount,
+                description: `${description} (${category})`,
+                category: category,
+                date: new Date().toLocaleDateString('ar-EG'),
+                timestamp: new Date()
+            };
+            
+            transactions.unshift(transaction);
+            saveData();
+            calculateTotals();
+            updateDisplay();
+            renderTransactions();
+            renderMonthlyStats();
+            
+            // Check warnings after adding expense
+            setTimeout(() => {
+                checkWarnings();
+            }, 500);
+            
+            showNotification(`💸 تم إضافة مصروف بقيمة ${amount.toLocaleString()} د.ع في فئة ${category}!`, 'error');
+            this.reset();
+        });
+
+        // Calculate totals
+        function calculateTotals() {
+            totals = {
+                income: 0,
+                expenses: 0,
+                subscriptions: 0
+            };
+            
+            transactions.forEach(transaction => {
+                if (transaction.type === 'income') {
+                    if (transaction.description.includes('اشتراك')) {
+                        totals.subscriptions += transaction.amount;
+                    } else {
+                        totals.income += transaction.amount;
+                    }
+                } else if (transaction.type === 'expense') {
+                    totals.expenses += transaction.amount;
+                }
+            });
+        }
+
+        // Update display
+        function updateDisplay() {
+            document.getElementById('totalIncome').textContent = `${totals.income.toLocaleString()} د.ع`;
+            document.getElementById('totalExpenses').textContent = `${totals.expenses.toLocaleString()} د.ع`;
+            document.getElementById('totalSubscriptions').textContent = `${totals.subscriptions.toLocaleString()} د.ع`;
+            
+            const netBalance = totals.income + totals.subscriptions - totals.expenses;
+            const netBalanceElement = document.getElementById('netBalance');
+            netBalanceElement.textContent = `${netBalance.toLocaleString()} د.ع`;
+            
+            // Change color based on balance
+            const balanceCard = netBalanceElement.closest('.stats-card');
+            if (netBalance >= 0) {
+                balanceCard.className = balanceCard.className.replace(/from-\w+-\d+ to-\w+-\d+/, 'from-cyan-500 to-blue-600');
+            } else {
+                balanceCard.className = balanceCard.className.replace(/from-\w+-\d+ to-\w+-\d+/, 'from-red-500 to-rose-600');
+            }
+        }
+
+        // Render transactions
+        function renderTransactions() {
+            const tbody = document.getElementById('transactionsTable');
+            
+            if (transactions.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                            <div class="flex flex-col items-center">
+                                <div class="text-6xl mb-4">📋</div>
+                                <p class="text-xl">لا توجد عمليات مالية بعد</p>
+                                <p class="text-gray-400 mt-2">ابدأ بإضافة أول عملية مالية</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = transactions.map(transaction => {
+                const typeInfo = {
+                    income: { icon: '🚚', text: 'وصل', class: 'text-green-600 bg-green-50' },
+                    expense: { icon: '💸', text: 'مصروف', class: 'text-red-600 bg-red-50' },
+                    subscription: { icon: '🔄', text: 'اشتراك', class: 'text-purple-600 bg-purple-50' }
+                };
+                
+                const info = typeInfo[transaction.type];
+                
+                return `
+                    <tr class="table-row border-b border-gray-100 hover:shadow-lg">
+                        <td class="px-6 py-4 text-gray-700 font-medium">${transaction.date}</td>
+                        <td class="px-6 py-4">
+                            <span class="${info.class} px-3 py-2 rounded-full font-bold text-sm">
+                                ${info.icon} ${info.text}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-700 font-medium">${transaction.agent || '-'}</td>
+                        <td class="px-6 py-4 text-gray-700 font-medium">${transaction.description}</td>
+                        <td class="px-6 py-4 font-bold text-lg ${info.class.split(' ')[0]}">${transaction.amount.toLocaleString()} د.ع</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        // Format number with commas as user types
+        function formatNumberInput(input) {
+            // Get cursor position
+            let cursorPosition = input.selectionStart;
+            
+            // Remove all non-digit characters
+            let value = input.value.replace(/[^\d]/g, '');
+            
+            // Don't format if empty
+            if (!value) {
+                input.value = '';
+                return;
+            }
+            
+            // Add commas every 3 digits from right to left
+            let formattedValue = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            
+            // Count commas before cursor
+            let beforeCursor = input.value.substring(0, cursorPosition);
+            let commasBeforeCursor = (beforeCursor.match(/,/g) || []).length;
+            
+            // Update input value
+            input.value = formattedValue;
+            
+            // Calculate new cursor position
+            let digitsBeforeCursor = beforeCursor.replace(/[^\d]/g, '').length;
+            let newCommasBeforeCursor = 0;
+            let digitCount = 0;
+            
+            for (let i = 0; i < formattedValue.length; i++) {
+                if (formattedValue[i] === ',') {
+                    newCommasBeforeCursor++;
+                } else {
+                    digitCount++;
+                    if (digitCount >= digitsBeforeCursor) {
+                        break;
+                    }
+                }
+            }
+            
+            let newCursorPosition = digitsBeforeCursor + newCommasBeforeCursor;
+            input.setSelectionRange(newCursorPosition, newCursorPosition);
+        }
+
+        // Get numeric value from formatted input
+        function getNumericValue(input) {
+            return parseFloat(input.value.replace(/,/g, '')) || 0;
+        }
+
+        // Add event listeners for number formatting
+        document.addEventListener('DOMContentLoaded', function() {
+            const numberInputs = ['incomeAmount', 'subscriptionAmount', 'expenseAmount'];
+            
+            numberInputs.forEach(inputId => {
+                const input = document.getElementById(inputId);
+                
+                // Only allow numbers and commas
+                input.addEventListener('keypress', function(e) {
+                    // Allow backspace, delete, tab, escape, enter
+                    if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                        // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 86 && e.ctrlKey === true) ||
+                        (e.keyCode === 88 && e.ctrlKey === true)) {
+                        return;
+                    }
+                    // Ensure that it is a number and stop the keypress
+                    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                        e.preventDefault();
+                    }
+                });
+                
+                // Format on input
+                input.addEventListener('input', function() {
+                    formatNumberInput(this);
+                });
+                
+                // Handle paste events
+                input.addEventListener('paste', function(e) {
+                    setTimeout(() => {
+                        formatNumberInput(this);
+                    }, 10);
+                });
+            });
+
+            // Add number-only restriction for receipt number field
+            const receiptNumberInput = document.getElementById('incomeDescription');
+            receiptNumberInput.addEventListener('keypress', function(e) {
+                // Allow backspace, delete, tab, escape, enter
+                if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                    // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                    (e.keyCode === 65 && e.ctrlKey === true) ||
+                    (e.keyCode === 67 && e.ctrlKey === true) ||
+                    (e.keyCode === 86 && e.ctrlKey === true) ||
+                    (e.keyCode === 88 && e.ctrlKey === true)) {
+                    return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+
+            // Handle paste events for receipt number
+            receiptNumberInput.addEventListener('paste', function(e) {
+                setTimeout(() => {
+                    // Remove any non-digit characters from pasted content
+                    this.value = this.value.replace(/[^\d]/g, '');
+                }, 10);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97b5a6d222a94d91',t:'MTc1NzI0MjI5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
